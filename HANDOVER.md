@@ -63,5 +63,31 @@ video-ai-portal/
    * 배경색, 텍스트 로고 크기 변경 등은 전적으로 `styles.css`에서 제어 가능합니다.
 
 ---
+
+## 6. 최근 진행 상황 및 배포 현황 (2026-07-13 업데이트)
+
+1. **Git 버전 관리 도입**
+   * 프로젝트 내 Git 저장소를 초기화했습니다.
+   * 외부 스킬/도구 모음인 `taste-skill/` 디렉토리를 배포 최적화를 위해 `.gitignore`에 등록하여 제외시켰습니다.
+   * 첫 커밋(`Initial commit`)을 생성하여 소스 코드 버전 기록을 시작했습니다.
+
+2. **GitHub 저장소 연동 및 푸시**
+   * 원격 저장소를 사용자 깃허브 계정(`flushkim`)의 `video-ai-portal` 저장소로 연결했습니다.
+   * **원격 저장소 주소**: `https://github.com/flushkim/video-ai-portal.git`
+   * `main` 브랜치로 모든 프로젝트 코드를 안전하게 푸시(Push) 완료했습니다.
+
+3. **Vercel 자동 빌드 및 배포**
+   * GitHub 저장소와 Vercel을 연동하여 지속적 배포(CD) 환경을 마련했습니다.
+   * **기본 배포 URL**: [https://video-ai-portal.vercel.app/](https://video-ai-portal.vercel.app/)
+
+4. **개인 커스텀 도메인 (`dcpg.site`) 연동**
+   * 가비아(Gabia)에서 구매한 개인 도메인 `dcpg.site`를 Vercel 프로젝트에 연동했습니다.
+   * **도메인 설정 내역 (가비아 DNS)**:
+     * A 레코드: `@` -> `76.76.21.21` (루트 도메인 연결)
+     * CNAME 레코드: `www` -> `cname.vercel-dns.com.` (www 도메인 연결)
+   * 현재 DNS 정보가 전파 및 조율 중이며, 완료되는 즉시 [https://dcpg.site](https://dcpg.site)로 접속이 가능해집니다.
+
+---
 **[End of Document]** 
 *만들어진 기반은 매우 탄탄하고 유니크합니다. 굿 럭!* 🚀
+
