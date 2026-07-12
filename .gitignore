@@ -26,3 +26,6 @@ dist-ssr
 # External skills / utilities
 taste-skill/
 
+
+# Full-resolution art source, kept locally, not shipped
+assets-src/

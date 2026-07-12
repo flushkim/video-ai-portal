@@ -1,67 +1,125 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+/* ═══════════════════════════════════════════════════════════════
+   DCPG - Découpage AI Studio
+   Aesthetic: desktop simulation (Win95) crossed with retrofuturism,
+   i.e. the future as imagined in 1985, not the future as it arrived.
+
+   Palette policy: the Win95 greys and navy are SYSTEM chrome, the way
+   Fluent or Carbon tokens would be. They are not the brand accent.
+   Exactly one brand accent exists: phosphor cyan. It is the colour of
+   80s computer graphics (Amiga, SGI), deliberately not synthwave neon.
+
+   Z-index scale (documented, not ad-hoc):
+     1   page content
+     2   noise / grain layers
+     5   win95 window
+     30  taskbar
+     35  start menu
+     49  glare
+     50  scanlines
+     100 tv bezel
+     200 tape stage
+   ═══════════════════════════════════════════════════════════════ */
+
+@font-face {
+  font-family: 'Press Start 2P';
+  src: url('/fonts/press-start-2p-latin.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'VT323';
+  src: url('/fonts/vt323-latin.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --font-pixel: 'Press Start 2P', cursive;
-  --font-crt:   'VT323', monospace;
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-crt: 'VT323', 'Courier New', monospace;
+
+  /* Brand accent. One. Locked across every stage of the page. */
+  --accent: #46e3e8;
+  --accent-dim: #1c8286;
+
+  /* CRT / device chrome. Off-black, never #000. */
+  --crt-black: #0a0c0d;
+  --crt-void: #06080a;
+  --vcr-blue: #101a8c;
+
+  /* Win95 system palette. */
   --win-bg: #c0c0c0;
+  --win-face: #dfdfdf;
+  --win-shadow: #808080;
   --win-title: #000080;
+  --win-title-grad: #1084d0;
+
+  /* Machine plastic for the tape deck. */
+  --deck-metal: #23262a;
+  --deck-metal-hi: #34383d;
+  --deck-metal-lo: #131518;
+
+  /* Shape lock: every interactive surface is sharp (radius 0).
+     Only the physical TV body is round, because it is furniture. */
+  --radius-ui: 0;
 }
 
-body, html {
-  width: 100%; height: 100%;
-  background: #080808;
+html, body {
+  width: 100%;
+  height: 100%;
+  background: var(--crt-void);
   overflow: hidden;
   font-family: var(--font-crt);
-  perspective: 1500px;
-  transform-style: preserve-3d;
+  color: #e8f4f4;
 }
 
-/* ── 3D CRT Bezel ── */
+/* ═══ CRT CABINET ═══════════════════════════════════════════════ */
+
 .css-tv-bezel {
-  position: absolute;
-  top: 3vw; left: 4vw; right: 4vw; bottom: 3vw;
-  background: transparent;
+  position: fixed;
+  inset: 3vw 4vw;
   pointer-events: none;
   z-index: 100;
-  border: 6vw solid #1f1f1f;
-  border-top-color: #2b2b2b;
-  border-bottom-color: #111111;
-  border-left-color: #1a1a1a;
-  border-right-color: #1a1a1a;
+  border: 6vw solid #1f2124;
+  border-top-color: #2c2f33;
+  border-bottom-color: #101113;
+  border-left-color: #1a1c1f;
+  border-right-color: #1a1c1f;
   border-radius: 6vw;
-  box-shadow: 
-    inset 0 0 3vw 1vw rgba(0,0,0,0.9),
-    inset 0 0 6vw 2vw rgba(0,0,0,0.8),
-    0 1vw 3vw rgba(0,0,0,0.8);
+  box-shadow:
+    inset 0 0 3vw 1vw rgba(0, 0, 0, 0.9),
+    inset 0 0 6vw 2vw rgba(0, 0, 0, 0.8),
+    0 1vw 3vw rgba(0, 0, 0, 0.8);
 }
 
 .css-tv-inner-bevel {
-  position: absolute;
-  top: 9vw; left: 10vw; right: 10vw; bottom: 9vw;
+  position: fixed;
+  inset: 9vw 10vw;
   border-radius: 4vw;
-  box-shadow: inset 0 0 2vw rgba(0,0,0,0.9);
+  box-shadow: inset 0 0 2vw rgba(0, 0, 0, 0.9);
   pointer-events: none;
   z-index: 101;
 }
 
 .tv-brand {
   position: absolute;
-  bottom: -4.5vw; left: 50%;
+  bottom: -4.5vw;
+  left: 50%;
   transform: translateX(-50%);
-  color: #333;
-  font-family: 'Arial', sans-serif;
-  font-weight: 900;
-  font-size: 1.5vw;
+  color: #3a3d42;
+  font-family: var(--font-pixel);
+  font-size: 0.9vw;
   letter-spacing: 0.4em;
-  text-shadow: 1px 1px 0 rgba(255,255,255,0.1), -1px -1px 0 rgba(0,0,0,0.8);
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.08), -1px -1px 0 rgba(0, 0, 0, 0.8);
 }
 
 .tv-screen {
-  position: absolute;
-  top: 8.5vw; left: 9.5vw; right: 9.5vw; bottom: 8.5vw;
-  background: #000;
+  position: fixed;
+  inset: 8.5vw 9.5vw;
+  background: var(--crt-black);
   border-radius: 4vw;
   overflow: hidden;
   z-index: 1;
@@ -74,280 +132,1239 @@ body, html {
   position: absolute; inset: 0; z-index: 50; pointer-events: none;
   background: repeating-linear-gradient(
     0deg,
-    rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 2px,
+    rgba(0, 0, 0, 0.16) 0px, rgba(0, 0, 0, 0.16) 2px,
     transparent 2px, transparent 4px
   );
 }
+
 .glare {
   position: absolute; inset: 0; z-index: 49; pointer-events: none;
-  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 70%);
+  background:
+    radial-gradient(ellipse at 30% 12%, rgba(255, 255, 255, 0.10) 0%, transparent 55%),
+    radial-gradient(circle at 50% 50%, rgba(160, 220, 255, 0.045) 0%, transparent 70%);
 }
 
+/* CRT collapse. Motivated: it is a state transition, the screen changing channel. */
 .tv-turn-off-crt {
   animation: crtTurnOff 0.6s cubic-bezier(0.1, 0.9, 0.2, 1) forwards !important;
   transform-origin: center center;
 }
-
 @keyframes crtTurnOff {
-  0% { transform: scaleY(1) scaleX(1); opacity: 1; filter: brightness(1); }
-  50% { transform: scaleY(0.01) scaleX(1); opacity: 1; filter: brightness(5); background: #fff; }
-  80% { transform: scaleY(0.01) scaleX(0); opacity: 1; filter: brightness(10); background: #fff; }
-  100% { transform: scaleY(0) scaleX(0); opacity: 0; filter: brightness(10); }
+  0%   { transform: scale(1, 1);    opacity: 1; filter: brightness(1); }
+  50%  { transform: scale(1, 0.01); opacity: 1; filter: brightness(6); }
+  80%  { transform: scale(0, 0.01); opacity: 1; filter: brightness(10); }
+  100% { transform: scale(0, 0);    opacity: 0; filter: brightness(10); }
 }
 
-/* ── PAGE 1 (VCR HOME) ── */
+/* ═══ STAGE 1: VCR HOME ═════════════════════════════════════════ */
+
 #homeContent {
-  background: #0000a0;
+  background:
+    radial-gradient(ellipse at 50% 40%, #1b25a8 0%, var(--vcr-blue) 55%, #080d4a 100%);
   flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 5;
 }
-.osd-top-left { position: absolute; top: 8%; left: 8%; color: #0f0; font-size: clamp(1.5rem, 3vw, 2.5rem); text-shadow: 2px 2px 0 #000; }
-.osd-top-right { position: absolute; top: 8%; right: 8%; color: #fff; font-size: clamp(1.5rem, 3vw, 2.5rem); text-shadow: 2px 2px 0 #000; }
-.dcpg-logo { font-family: var(--font-pixel); font-size: clamp(3rem, 10vw, 7rem); color: #fff; letter-spacing: 0.1em; text-shadow: 6px 6px 0px rgba(0,0,0,0.6); margin-bottom: 2%; }
-.dcpg-sub { font-size: clamp(1.2rem, 3vw, 2rem); color: #fff; text-shadow: 2px 2px 0px #000; letter-spacing: 0.2em; }
-.press-start-btn { background: transparent; border: none; color: #0f0; font-family: var(--font-pixel); font-size: clamp(1rem, 2.5vw, 1.8rem); margin-top: 10%; cursor: pointer; text-shadow: 2px 2px 0 #000; animation: blink 1.2s step-end infinite; }
+
+.osd-corner {
+  position: absolute;
+  font-size: clamp(1.1rem, 2.4vw, 2rem);
+  letter-spacing: 0.12em;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
+}
+.osd-tl { top: 7%; left: 7%; color: var(--accent); }
+.osd-tr { top: 7%; right: 7%; color: #fff; }
+
+.home-stack { text-align: center; }
+
+/* Chrome-bevelled display type. The 1990s CD-ROM title treatment, which is
+   exactly what "the future" looked like to a 1990s art director. */
+.dcpg-logo {
+  font-family: var(--font-pixel);
+  font-size: clamp(2.6rem, 9vw, 6.5rem);
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%, #d8e8ee 28%, #7fa8b4 46%,
+    #2c4a55 50%, #9fd4dc 56%, #e6fbff 74%, #8fb9c2 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(4px 5px 0 rgba(0, 0, 0, 0.55));
+}
+
+.dcpg-sub {
+  margin-top: 0.8rem;
+  font-size: clamp(1rem, 2.6vw, 1.75rem);
+  letter-spacing: 0.34em;
+  color: #cfe9ee;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+}
+
+.press-start-btn {
+  margin-top: clamp(2rem, 7vh, 5rem);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-ui);
+  color: var(--accent);
+  font-family: var(--font-pixel);
+  font-size: clamp(0.85rem, 2.1vw, 1.5rem);
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  padding: 0.6em 1em;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.8);
+  animation: blink 1.2s step-end infinite;
+}
+.press-start-btn:hover { color: #fff; }
+.press-start-btn:active { transform: translateY(1px); }
+.press-start-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.press-start-btn[disabled] { cursor: default; }
 @keyframes blink { 50% { opacity: 0; } }
 
-/* ── SMPTE Color Bars ── */
+/* ═══ STAGE 2: TAPE LOAD ════════════════════════════════════════ */
+
+#vhsTransition, #companyContent { background: var(--crt-black); overflow: hidden; }
+#vhsTransition { z-index: 20; }
+#companyContent { z-index: 6; }
+
 .color-bars-bg {
   position: absolute; inset: 0; z-index: 1;
   background: linear-gradient(
     to right,
-    #bfbfbf 0%, #bfbfbf 14.28%,
-    #c0c000 14.28%, #c0c000 28.57%,
-    #00c0c0 28.57%, #00c0c0 42.85%,
-    #00c000 42.85%, #00c000 57.14%,
-    #c000c0 57.14%, #c000c0 71.42%,
-    #c00000 71.42%, #c00000 85.71%,
-    #0000c0 85.71%, #0000c0 100%
+    #bfbfbf 0 14.28%, #c0c000 14.28% 28.57%, #00c0c0 28.57% 42.85%,
+    #00c000 42.85% 57.14%, #c000c0 57.14% 71.42%, #c00000 71.42% 85.71%,
+    #0000c0 85.71% 100%
   );
 }
-
-.color-bars-bg.grayscale-anim { animation: toGrayscale 2.8s ease-in forwards; }
+.color-bars-bg.grayscale-anim { animation: toGrayscale 2.6s ease-in forwards; }
 @keyframes toGrayscale {
-  0% { filter: grayscale(0%) brightness(1); }
-  30% { filter: grayscale(0%) brightness(1); }
-  100% { filter: grayscale(100%) brightness(0.4); }
+  0%, 25% { filter: grayscale(0) brightness(1); }
+  100%    { filter: grayscale(1) brightness(0.32); }
 }
-#companyContent .color-bars-bg { filter: grayscale(100%) brightness(0.4); }
 
-/* ── TRANSITION & PAGE 2 (Static Noise) ── */
-#vhsTransition, #companyContent { background: #000; z-index: 20; overflow: hidden; }
-#companyContent { z-index: 6; }
 .noise-layer {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  z-index: 2; image-rendering: pixelated; opacity: 0.8;
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  z-index: 2;
+  image-rendering: pixelated;
+  opacity: 0.8;
+  pointer-events: none;
+}
+.noise-layer--faint { opacity: 0.16; }
+
+/* Boot readout. Storytelling: the deck is reading the tape you just fed it. */
+.boot-readout {
+  position: absolute;
+  left: 6%;
+  bottom: 8%;
+  z-index: 10;
+  margin: 0;
+  font-family: var(--font-crt);
+  font-size: clamp(0.95rem, 1.5vw, 1.35rem);
+  line-height: 1.35;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  text-shadow: 0 0 1px rgba(70, 227, 232, 0.6), 2px 2px 0 rgba(0, 0, 0, 0.85);
+  white-space: pre;
+  pointer-events: none;
 }
 
-/* ── TRUE 3D VHS CASSETTE (CUBOID) ── */
-.vhs-cassette-container {
-  position: absolute; left: 50%; top: 0;
-  transform-style: preserve-3d;
-  transform: translate(-50%, 150vh) translateZ(1200px) scale(2);
+/* ═══ THE TAPE ══════════════════════════════════════════════════
+   One perspective for the cassette and the deck it enters. Depth
+   sorting, not z-index, decides what swallows what.
+   Perspective is tight (820px) on purpose: at 1500px the faces barely
+   splay and the cassette reads as a flat rectangle.
+   ═══════════════════════════════════════════════════════════════ */
+
+.vhs-stage {
+  position: fixed;
+  inset: 0;
   z-index: 200;
+  perspective: 820px;
+  /* Camera sits above the deck. Without this you look at the flat cassette
+     dead-on from its own height and it collapses into a 400x50 line. */
+  perspective-origin: 50% 30%;
+  transform-style: preserve-3d;
+  pointer-events: none;
 }
-.vhs-cassette-container.inserting {
-  animation: tapeInsert3D 2.6s linear forwards, tapeZDrop 2.6s step-end forwards;
+.vhs-stage[hidden] { display: none; }
+
+/* --- The deck's mouth ---
+   A VHS slot is a wide, shallow slit: it takes the cassette lying flat, on its
+   long edge. Not a square hole. The opening is sized to the cassette's leading
+   cross-section (400 wide x 50 tall) plus clearance. */
+
+.vcr-slot {
+  position: absolute;
+  top: 58%; left: 50%;
+  width: 0; height: 0;
+  transform-style: preserve-3d;
+  opacity: 0;
 }
-.vhs-cassette-container.inserting .vhs-3d-box {
-  animation: tapeSpinIn 2.6s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+.vhs-stage.loading .vcr-slot { animation: slotAppear 0.5s ease-out 0.15s forwards; }
+@keyframes slotAppear { to { opacity: 1; } }
+
+/* The faceplate. Its border IS the machine front, its hollow centre is the
+   opening. The tape recedes behind this plane and gets framed by it. */
+.vcr-slot-lip {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 440px; height: 80px;
+  transform: translate(-50%, -50%) translateZ(40px);
+  border: 34px solid var(--deck-metal);
+  border-top-color: var(--deck-metal-hi);
+  border-bottom-color: var(--deck-metal-lo);
+  background: transparent;
+  box-shadow:
+    inset 0 0 0 2px #0a0b0d,
+    inset 0 6px 14px rgba(0, 0, 0, 0.85),
+    0 10px 40px rgba(0, 0, 0, 0.6);
 }
 
-@keyframes tapeZDrop {
-  0%   { z-index: 200; }
-  50%  { z-index: 90; }
-  100% { z-index: 90; }
+/* The cavity behind the mouth. Gives the tape somewhere to actually go. */
+.vcr-slot-throat {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 440px; height: 80px;
+  transform: translate(-50%, -50%) translateZ(-520px);
+  background: radial-gradient(ellipse at 50% 40%, #16191d 0%, #050607 70%);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.95);
 }
 
-@keyframes tapeInsert3D {
-  0% { transform: translate(-50%, 120vh) translateZ(800px) scale(1.5); opacity: 1; }
-  50% { transform: translate(-50%, 35vh) translateZ(0px) scale(0.9); opacity: 1; }
-  100% { transform: translate(-50%, 35vh) translateZ(-1500px) scale(0.2); opacity: 0; }
+/* The spring-loaded door. Pushed open by the tape, snaps shut behind it. */
+.vcr-slot-flap {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 434px; height: 76px;
+  margin: -38px 0 0 -217px;
+  transform: translateZ(30px) rotateX(0deg);
+  transform-origin: top center;
+  background: linear-gradient(180deg, #2b2f34 0%, #191c20 60%, #101215 100%);
+  border-top: 2px solid #3d4248;
+  box-shadow: inset 0 -8px 18px rgba(0, 0, 0, 0.8);
+}
+.vhs-stage.loading .vcr-slot-flap {
+  animation: flapCycle 2.6s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+}
+@keyframes flapCycle {
+  0%, 52%  { transform: translateZ(30px) rotateX(0deg); }
+  /* Held open only while the cassette is actually passing through it. */
+  60%, 88% { transform: translateZ(30px) rotateX(-84deg); }
+  100%     { transform: translateZ(30px) rotateX(0deg); }
 }
 
-@keyframes tapeSpinIn {
-  0% { transform: rotateX(-75deg) rotateY(25deg) rotateZ(10deg); }
-  50% { transform: rotateX(-10deg) rotateY(0deg) rotateZ(0deg); }
-  100% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-}
+/* --- The cassette ---
+   Authored as a front-facing 400x220 shell, 50 deep. rotateX(90deg) lays it
+   flat: the 220 becomes depth, the 50 becomes height, the label face points
+   up, and the spine (.face.top) turns to face the camera. Which is exactly
+   how a tape sits in your hand as you push it into a deck.
+   --- */
 
 .vhs-3d-box {
-  width: 400px; height: 220px;
-  position: relative;
+  position: absolute;
+  top: 58%; left: 50%;
+  width: 400px;
+  height: 220px;
+  margin: -110px 0 0 -200px;
   transform-style: preserve-3d;
+  transform: translate3d(0, 110vh, 240px) rotateX(-6deg) rotateY(26deg) rotateZ(-7deg);
 }
 
+.vhs-stage.loading .vhs-3d-box {
+  animation:
+    tapeTravel 2.6s cubic-bezier(0.4, 0.03, 0.2, 1) forwards,
+    tapeEnterDark 2.6s linear forwards;
+}
+
+@keyframes tapeTravel {
+  /* 1. Airborne, coming up from below at an angle. */
+  0%  { transform: translate3d(0, 110vh, 240px) rotateX(-6deg) rotateY(26deg) rotateZ(-7deg); }
+
+  /* 2. Squares up and presents itself face-on. This is the beat where you
+        read DCPG TAPE 01. It hovers above the slot, still standing upright. */
+  30% { transform: translate3d(0, -22vh, 230px) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+  42% { transform: translate3d(0, -22vh, 230px) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+
+  /* 3. Tips over 90 degrees and drops to slot height. Now it is lying flat,
+        label up, spine toward you, leading edge at the mouth. */
+  62% { transform: translate3d(0, 0, 150px) rotateX(90deg) rotateY(0deg) rotateZ(0deg); }
+
+  /* 4. The deck grabs it. A short mechanical jolt before the motor engages. */
+  68% { transform: translate3d(0, 0, 134px) rotateX(90deg) rotateY(0deg) rotateZ(0deg); }
+  72% { transform: translate3d(0, 0, 144px) rotateX(90deg) rotateY(0deg) rotateZ(0deg); }
+
+  /* 5. Motor draws it in, lengthwise. Perspective does the shrinking; there is
+        no fake scale anywhere in this sequence. */
+  100% { transform: translate3d(0, 0, -420px) rotateX(90deg) rotateY(0deg) rotateZ(0deg); }
+}
+
+/* It gets dark because it is going inside a machine, not because it is fading out. */
+@keyframes tapeEnterDark {
+  0%, 68% { filter: brightness(1); }
+  100%    { filter: brightness(0.2); }
+}
+
+/* Every face is centred on the box, then rotated out to its wall and pushed
+   half a box-dimension along its own new +Z. This is the only construction
+   that actually closes into a solid; positioning by transform-origin leaves
+   gaps at the corners. */
 .face {
-  position: absolute; top: 50%; left: 50%;
-  box-sizing: border-box;
-  transform-style: preserve-3d;
-  background: #181818;
-  border: 2px solid #000;
-  box-shadow: inset 0 0 15px rgba(0,0,0,0.9);
+  position: absolute;
+  top: 50%; left: 50%;
+  backface-visibility: hidden;
 }
 
+/* Front: the label face. Lit. */
 .face.front {
   width: 400px; height: 220px;
   transform: translate(-50%, -50%) translateZ(25px);
-  border-top: 15px solid #252525;
-  border-radius: 5px;
+  background: linear-gradient(160deg, #2a2d31 0%, #191b1e 45%, #0f1113 100%);
+  border-top: 14px solid #33373c;
+  box-shadow: inset 0 0 22px rgba(0, 0, 0, 0.75);
 }
+/* Specular sweep across the shell while it rotates. Sells the plastic. */
+.face.front::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.16) 46%, transparent 58%);
+  opacity: 0;
+}
+.vhs-stage.loading .face.front::after { animation: shellGlint 2.6s ease-out forwards; }
+@keyframes shellGlint {
+  0%   { opacity: 0;    transform: translateX(-40%); }
+  22%  { opacity: 0.95; }
+  55%  { opacity: 0.25; transform: translateX(35%); }
+  100% { opacity: 0;    transform: translateX(45%); }
+}
+
+/* Back: unlit, faces away. */
 .face.back {
   width: 400px; height: 220px;
   transform: translate(-50%, -50%) rotateY(180deg) translateZ(25px);
+  background: #0d0f11;
 }
+/* Top: the spine. Once the cassette lies flat this is the face turned toward
+   you, so it carries the spine label and takes the key light. */
 .face.top {
   width: 400px; height: 50px;
   transform: translate(-50%, -50%) rotateX(90deg) translateZ(110px);
   display: flex; align-items: center; justify-content: center;
-  background: #2a2a2a;
+  background: linear-gradient(180deg, #43484e 0%, #2a2e33 100%);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.10);
 }
+/* Bottom: the leading edge that disappears into the deck first. In shadow. */
 .face.bottom {
   width: 400px; height: 50px;
   transform: translate(-50%, -50%) rotateX(-90deg) translateZ(110px);
-  background: #0a0a0a;
+  background: linear-gradient(180deg, #0d0f11 0%, #07080a 100%);
 }
+/* Sides: half-lit, so left and right read as different planes. */
 .face.left {
   width: 50px; height: 220px;
   transform: translate(-50%, -50%) rotateY(-90deg) translateZ(200px);
-  background: #111;
+  background: linear-gradient(90deg, #101215 0%, #1c1f23 100%);
 }
 .face.right {
   width: 50px; height: 220px;
   transform: translate(-50%, -50%) rotateY(90deg) translateZ(200px);
-  background: #111;
+  background: linear-gradient(90deg, #2e3238 0%, #16181b 100%);
 }
 
 .vhs-spine-label {
-  width: 70%; height: 60%; background: #f4ebd8;
+  width: 68%; height: 58%;
+  background: #efe6d2;
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-pixel); font-size: 1rem; color: #000;
-  border-radius: 2px; box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+  font-family: var(--font-pixel);
+  font-size: 0.72rem;
+  color: #14161a;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.25);
 }
 
 .vhs-label {
-  position: absolute; top: 15%; left: 10%; right: 10%; height: 35%;
-  background: #f4ebd8; border-radius: 4px;
-  display: flex; align-items: flex-start; justify-content: center; padding-top: 10px;
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.3); z-index: 2;
+  position: absolute;
+  top: 14%; left: 9%; right: 9%; height: 36%;
+  background: linear-gradient(180deg, #f4ecd9 0%, #ddd2ba 100%);
+  display: flex; align-items: flex-start; justify-content: center;
+  padding-top: 10px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.28);
+  z-index: 2;
 }
-.vhs-label-title { font-family: var(--font-pixel); font-size: 1.2rem; color: #111; }
+.vhs-label-title { font-family: var(--font-pixel); font-size: 0.95rem; color: #14161a; }
 
 .vhs-window {
-  position: absolute; bottom: 10%; left: 50%; transform: translateX(-50%);
-  width: 220px; height: 80px;
-  background: rgba(0,0,0,0.8);
-  border: 2px solid #222; border-radius: 5px;
-  box-shadow: inset 0 0 10px #000;
+  position: absolute;
+  bottom: 9%; left: 50%;
+  transform: translateX(-50%);
+  width: 224px; height: 84px;
+  background: linear-gradient(180deg, rgba(120, 170, 180, 0.20), rgba(0, 0, 0, 0.9));
+  border: 2px solid #24282c;
+  box-shadow: inset 0 0 12px #000;
   z-index: 1;
 }
 
 .vhs-reels {
-  position: absolute; bottom: 12%; left: 50%; transform: translateX(-50%);
-  display: flex; gap: 80px; z-index: 3;
+  position: absolute;
+  bottom: 11%; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 78px;
+  z-index: 3;
 }
 .vhs-reel {
-  width: 65px; height: 65px; border-radius: 50%; background: #222;
-  border: 4px solid #333; box-shadow: inset 0 0 10px #000;
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #3a3f45 0%, #191c1f 60%, #0c0e10 100%);
+  border: 4px solid #2b2f34;
+  box-shadow: inset 0 0 10px #000;
 }
-.vhs-reel.spinning { animation: reelSpin 0.3s linear infinite; }
+.vhs-reel.spinning { animation: reelSpin 0.35s linear infinite; }
 @keyframes reelSpin { to { transform: rotate(360deg); } }
 
-/* ── Win95 UI ── */
+/* ═══ STAGE 3: DESKTOP ══════════════════════════════════════════ */
+
+/* The wallpaper is a vector horizon: the 1985 idea of what a computer
+   would show you once computers got good. Hairline cyan, no neon bloom. */
+.grid-canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
 .win95-window {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  width: 70%; height: 75%; background: var(--win-bg);
-  border-top: 2px solid #fff; border-left: 2px solid #fff; border-right: 2px solid #000; border-bottom: 2px solid #000;
-  box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080, 8px 8px 0 rgba(0,0,0,0.5);
-  display: flex; flex-direction: column; z-index: 5;
-}
-
-/* Maximized state for inner folders */
-.win95-window.maximized {
-  width: 98%;
-  height: 96%;
-}
-
-.win95-titlebar { background: var(--win-title); color: #fff; padding: 4px 6px; display: flex; align-items: center; justify-content: space-between; font-family: var(--font-pixel); font-size: clamp(0.4rem, 1vw, 0.7rem); }
-.win95-titlebar-text { display: flex; align-items: center; gap: 8px; }
-.win95-btn-small { background: var(--win-bg); border-top: 2px solid #fff; border-left: 2px solid #fff; border-right: 2px solid #000; border-bottom: 2px solid #000; font-family: var(--font-pixel); font-size: 0.5rem; padding: 2px 4px; cursor: pointer; }
-.win95-content { flex: 1; padding: 15px; display: flex; gap: 15px; position: relative; }
-
-/* ── Inner Views ── */
-.view-section {
-  display: none; width: 100%; height: 100%;
-}
-.view-section.active {
-  display: flex; gap: 15px;
-}
-#viewAbout, #viewServices, #viewReel, #viewTeam, #viewContact {
+  position: absolute;
+  top: 46%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 72%; height: 74%;
+  background: var(--win-bg);
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #060708;
+  border-bottom: 2px solid #060708;
+  box-shadow:
+    inset 1px 1px var(--win-face),
+    inset -1px -1px var(--win-shadow),
+    8px 8px 0 rgba(0, 0, 0, 0.55);
+  display: flex;
   flex-direction: column;
+  z-index: 5;
+}
+.win95-window.maximized { width: 96%; height: 90%; }
+
+.win95-titlebar {
+  background: linear-gradient(90deg, var(--win-title) 0%, var(--win-title-grad) 100%);
+  color: #fff;
+  padding: 4px 4px 4px 7px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--font-pixel);
+  font-size: clamp(0.42rem, 0.85vw, 0.62rem);
+  letter-spacing: 0.04em;
+}
+.win95-titlebar-btns { display: flex; gap: 3px; }
+
+.win95-btn-small,
+.back-btn,
+.taskbar-start {
+  background: var(--win-bg);
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #060708;
+  border-bottom: 2px solid #060708;
+  border-radius: var(--radius-ui);
+  font-family: var(--font-pixel);
+  color: #14161a;
+  cursor: pointer;
+}
+.win95-btn-small { font-size: 0.5rem; padding: 3px 5px; line-height: 1; }
+.win95-btn-small:active,
+.back-btn:active,
+.taskbar-start:active,
+.taskbar-start[aria-expanded="true"] {
+  border-top-color: #060708;
+  border-left-color: #060708;
+  border-right-color: #fff;
+  border-bottom-color: #fff;
+}
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.win95-content {
+  flex: 1;
+  padding: 14px;
+  position: relative;
+  min-height: 0;
 }
 
-.desktop-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-content: flex-start; flex: 1; }
-.desktop-icon { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-decoration: none; cursor: pointer; padding: 10px; }
-.desktop-icon:hover { background: rgba(0, 0, 128, 0.1); outline: 1px dotted #000; }
-.icon-emoji { font-size: clamp(2rem, 4vw, 3rem); text-shadow: 2px 2px 0 rgba(0,0,0,0.3); }
-.desktop-icon span { font-family: var(--font-pixel); font-size: clamp(0.4rem, 0.8vw, 0.6rem); color: #000; background: #fff; padding: 2px 4px; }
+.view-section { display: none; width: 100%; height: 100%; }
+.view-section.active { display: flex; gap: 14px; }
+#viewAbout, #viewServices, #viewReel, #viewTeam, #viewContact { flex-direction: column; }
 
+/* ═══ DESKTOP: THE DETECTION BENCH ═════════════════════════════
+   Three columns: nav rail, live feed, controls. The feed and the sliders
+   are the product demo, so the sliders actually drive the feed. A slider
+   that does nothing is a fake screenshot with extra steps.
+   Emoji icons retained at the client's request.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* The rail is sized from its longest label. Press Start 2P is effectively
+   monospace at ~1em per glyph, and CONTROL.EXE is 11 glyphs, so the label needs
+   about 11 x 8.8px plus padding. Anything narrower and the type is unreadable,
+   which is exactly what happened at 92px. */
+#viewDesktop.active {
+  display: grid;
+  grid-template-columns: clamp(124px, 14%, 152px) minmax(0, 1fr) clamp(210px, 25%, 290px);
+  gap: 12px;
+  align-items: stretch;
+}
+
+/* --- Nav rail --- */
+.icon-rail {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 6px;
+  overflow-y: auto;
+  min-height: 0;
+}
+.desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 2px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-ui);
+  cursor: pointer;
+  font: inherit;
+}
+.desktop-icon:hover { background: rgba(0, 0, 128, 0.10); border-color: rgba(0, 0, 0, 0.35); border-style: dotted; }
+.desktop-icon:active { transform: translateY(1px); }
+.icon-emoji {
+  font-size: clamp(1.8rem, 2.6vw, 2.4rem);
+  line-height: 1;
+  filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.28));
+}
+.icon-label {
+  font-family: var(--font-pixel);
+  font-size: clamp(0.44rem, 0.62vw, 0.55rem);
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: #14161a;
+  background: #fff;
+  padding: 4px 5px;
+  text-align: center;
+}
+
+/* --- Centre column --- */
+.desk-main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  min-height: 0;
+}
+
+.scene-viewport {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--crt-void);
+  border-top: 2px solid var(--win-shadow);
+  border-left: 2px solid var(--win-shadow);
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+}
+
+/* Sized in JS to the plate's exact aspect, so a box at 77% really is at 77%
+   of the image and not of some letterboxed container. */
+.scene-frame {
+  position: relative;
+  overflow: hidden;
+  /* Scene Relight writes to this: 0 = noon, 1 = night. */
+  --night: 0;
+}
+
+/* The plate and its lighting ride the camera together. */
+.scene-plate {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.scene-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* The plate is 372px wide on purpose. Upscaling it with nearest-neighbour is
+     what gives real pixels instead of a blur. */
+  image-rendering: pixelated;
+  filter:
+    saturate(calc(1.08 - 0.42 * var(--night)))
+    brightness(calc(1 - 0.34 * var(--night)))
+    contrast(calc(1.05 + 0.12 * var(--night)));
+}
+
+/* Night grade. Multiply, so the art's own darks stay dark and the highlights
+   take the colour, which is how a night grade actually behaves. */
+.scene-night {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, #16215c 0%, #101838 60%, #0b1026 100%);
+  mix-blend-mode: multiply;
+  opacity: var(--night);
+}
+
+/* Practicals: the lamps, signals and shop windows that would actually be lit
+   once the sun is down. Positions taken from the plate, in plate percentages. */
+.scene-lamps {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: var(--night);
+  background:
+    radial-gradient(circle at 19.5% 40%, rgba(255, 176, 74, 0.55) 0%, transparent 9%),
+    radial-gradient(circle at 57% 36%, rgba(255, 138, 92, 0.5) 0%, transparent 7%),
+    radial-gradient(circle at 25% 27%, rgba(255, 214, 150, 0.42) 0%, transparent 11%),
+    radial-gradient(circle at 52% 44%, rgba(255, 226, 168, 0.38) 0%, transparent 16%),
+    radial-gradient(circle at 86% 46%, rgba(255, 216, 152, 0.34) 0%, transparent 15%),
+    radial-gradient(circle at 6% 46%, rgba(255, 220, 160, 0.3) 0%, transparent 14%),
+    radial-gradient(circle at 42% 12%, rgba(150, 255, 190, 0.28) 0%, transparent 12%);
+}
+.scene-trails {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Analysis grid and the monitor's own scanlines. Fixed: it belongs to the
+   viewer, not to the shot, so it does not ride the camera. */
+.scene-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(70, 227, 232, 0.07) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(90deg, rgba(70, 227, 232, 0.07) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.16) 0 2px, transparent 2px 4px);
+}
+
+/* The detector passing over the frame. Runs only while the feed is live, which
+   is the one sentence of justification this animation needs. */
+.scene-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  top: 0;
+  background: linear-gradient(90deg, transparent, rgba(70, 227, 232, 0.85), transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+.scene-scan { z-index: 4; }
+.scene-frame.is-live .scene-scan { animation: scanSweep 3.4s linear infinite; }
+@keyframes scanSweep {
+  0%   { transform: translateY(0);      opacity: 0; }
+  8%   { opacity: 0.9; }
+  92%  { opacity: 0.9; }
+  100% { transform: translateY(var(--scan-travel, 300px)); opacity: 0; }
+}
+
+.scene-boxes { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.scene-boxes[hidden] { display: none; }
+
+.det-box {
+  position: absolute;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(0, 0, 0, 0.45);
+}
+/* The one target actively held gets corner brackets rather than a full box,
+   so "tracking" and "detected" are readable at a glance without a legend. */
+.det-box--tracking {
+  border: 0;
+  box-shadow: none;
+  background-image:
+    linear-gradient(var(--accent), var(--accent)), linear-gradient(var(--accent), var(--accent)),
+    linear-gradient(var(--accent), var(--accent)), linear-gradient(var(--accent), var(--accent)),
+    linear-gradient(var(--accent), var(--accent)), linear-gradient(var(--accent), var(--accent)),
+    linear-gradient(var(--accent), var(--accent)), linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-size: 13px 3px, 3px 13px, 13px 3px, 3px 13px, 13px 3px, 3px 13px, 13px 3px, 3px 13px;
+  background-position:
+    left top, left top, right top, right top,
+    left bottom, left bottom, right bottom, right bottom;
+  filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.7));
+}
+
+.det-label {
+  position: absolute;
+  bottom: 100%;
+  left: -2px;
+  margin-bottom: 4px;
+  padding: 4px 6px;
+  background: #0d1747;
+  border: 2px solid var(--accent);
+  color: #eafcfd;
+  font-family: var(--font-pixel);
+  font-size: 0.42rem;
+  line-height: 1.6;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
+}
+.det-label b { display: block; font-weight: 400; color: var(--accent); }
+
+/* Face lock, shown only when Face Recognition Accuracy is high enough. */
+.det-face {
+  position: absolute;
+  left: 22%;
+  top: 4%;
+  width: 56%;
+  height: 22%;
+  border: 2px dotted var(--accent);
+}
+
+/* Boxes land one after another, the way a detector actually resolves a frame. */
+.det-box { animation: detLock 0.24s ease-out both; }
+@keyframes detLock {
+  from { opacity: 0; transform: scale(1.35); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.scene-hud {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 5px 8px;
+  background: linear-gradient(180deg, transparent, rgba(6, 8, 10, 0.85));
+  font-family: var(--font-pixel);
+  font-size: 0.4rem;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+}
+
+/* --- Strip under the feed: the one claim, and the one CTA. --- */
+.desk-strip {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 12px;
+  background: #fff;
+  border-top: 2px solid var(--win-shadow);
+  border-left: 2px solid var(--win-shadow);
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+}
+.desk-strip-p {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: #2c3138;
+}
+/* Win95's default button: navy fill, white label. System palette, clears AA. */
+.desk-cta {
+  flex: 0 0 auto;
+  padding: 10px 16px;
+  background: var(--win-title);
+  color: #fff;
+  font-family: var(--font-pixel);
+  font-size: 0.5rem;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  cursor: pointer;
+  border-top: 2px solid #4a63c8;
+  border-left: 2px solid #4a63c8;
+  border-right: 2px solid #00003d;
+  border-bottom: 2px solid #00003d;
+  border-radius: var(--radius-ui);
+}
+.desk-cta:hover { background: #001a9e; }
+.desk-cta:active {
+  transform: translateY(1px);
+  border-top-color: #00003d;
+  border-left-color: #00003d;
+  border-right-color: #4a63c8;
+  border-bottom-color: #4a63c8;
+}
+
+/* --- Control panel --- */
+.ctrl-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px;
+  background: var(--win-bg);
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-right: 2px solid var(--win-shadow);
+  border-bottom: 2px solid var(--win-shadow);
+}
+.ctrl-h {
+  font-family: var(--font-pixel);
+  font-size: 0.5rem;
+  letter-spacing: 0.14em;
+  color: #14161a;
+  padding-bottom: 8px;
+  border-bottom: 2px groove #fff;
+}
+
+.ctrl-sliders { display: flex; flex-direction: column; gap: 13px; }
+.ctrl-row { display: flex; flex-direction: column; gap: 6px; }
+.ctrl-name {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  font-size: 0.78rem;
+  line-height: 1.3;
+  color: #14161a;
+}
+.ctrl-hint {
+  flex: 0 0 auto;
+  font-family: var(--font-pixel);
+  font-size: 0.4rem;
+  letter-spacing: 0.06em;
+  color: var(--win-title);
+}
+
+/* Win95 trackbar: sunken groove, raised thumb. */
+.ctrl-row input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 20px;
+  background: transparent;
+  cursor: pointer;
+}
+.ctrl-row input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: #fff;
+  border-top: 2px solid var(--win-shadow);
+  border-left: 2px solid var(--win-shadow);
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+}
+.ctrl-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 20px;
+  margin-top: -10px;
+  background: var(--win-bg);
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #060708;
+  border-bottom: 2px solid #060708;
+  border-radius: var(--radius-ui);
+}
+.ctrl-row input[type="range"]::-moz-range-track {
+  height: 4px;
+  background: #fff;
+  border: 2px solid var(--win-shadow);
+}
+.ctrl-row input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 20px;
+  background: var(--win-bg);
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #060708;
+  border-bottom: 2px solid #060708;
+  border-radius: var(--radius-ui);
+}
+
+.ctrl-btns { display: flex; flex-direction: column; gap: 7px; margin-top: 2px; }
+.ctrl-btn {
+  padding: 9px 8px;
+  background: var(--win-bg);
+  color: #14161a;
+  font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #060708;
+  border-bottom: 2px solid #060708;
+  border-radius: var(--radius-ui);
+}
+.ctrl-btn:active {
+  transform: translateY(1px);
+  border-top-color: #060708;
+  border-left-color: #060708;
+  border-right-color: #fff;
+  border-bottom-color: #fff;
+}
+
+.ctrl-status {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 2px groove #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  font-size: 0.85rem;
+  color: #14161a;
+}
+.led {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-pixel);
+  font-size: 0.42rem;
+  letter-spacing: 0.06em;
+}
+.led::before {
+  content: "";
+  width: 11px;
+  height: 11px;
+  border: 2px solid #5c6169;
+  border-radius: 50%;
+}
+.led[data-state="idle"] { color: #5a6068; }
+.led[data-state="idle"]::before { background: #6b7480; }
+.led[data-state="live"] { color: #0d5b2c; }
+.led[data-state="live"]::before { background: #22c55e; box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.9); }
+.led[data-state="applied"] { color: #8a5a00; }
+.led[data-state="applied"]::before { background: #f5b301; box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.9); }
+
+/* --- Documents --- */
 .window-toolbar {
-  padding-bottom: 10px; border-bottom: 2px groove #fff; margin-bottom: 10px;
+  display: flex;
+  gap: 8px;
+  padding-bottom: 9px;
+  border-bottom: 2px groove #fff;
+  margin-bottom: 10px;
+  flex: 0 0 auto;
 }
-.back-btn {
-  background: var(--win-bg); border-top: 2px solid #fff; border-left: 2px solid #fff; border-right: 2px solid #000; border-bottom: 2px solid #000;
-  font-family: var(--font-pixel); font-size: 0.8rem; padding: 5px 10px; cursor: pointer;
-}
-.back-btn:active {
-  border-top: 2px solid #000; border-left: 2px solid #000; border-right: 2px solid #fff; border-bottom: 2px solid #fff;
-}
+.back-btn { font-size: 0.8rem; padding: 8px 13px; }
+
+/* ── Document type scale ──────────────────────────────────────────
+   Only inside the windows. The desktop keeps its small OS-chrome type; these
+   are pages you actually read, and at 0.95rem nobody was going to.
+   ─────────────────────────────────────────────────────────────── */
 .window-inner-content {
-  flex: 1; background: #fff; border: 2px inset #dfdfdf; padding: 15px;
-  font-family: 'Arial', sans-serif; font-size: 14px; overflow-y: auto; color: #000;
+  flex: 1;
+  min-height: 0;
+  background: #fff;
+  border-top: 2px solid var(--win-shadow);
+  border-left: 2px solid var(--win-shadow);
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  padding: 30px 34px;
+  overflow-y: auto;
+  color: #14161a;
+  font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  font-size: clamp(1.05rem, 1.15vw, 1.35rem);
+  line-height: 1.65;
 }
-.window-inner-content h3 { font-family: var(--font-pixel); margin-bottom: 15px; font-size: 1.2rem; }
-.window-inner-content p { margin-bottom: 10px; line-height: 1.4; }
-.window-inner-content ul { padding-left: 20px; line-height: 1.6; }
+.doc-h {
+  font-family: var(--font-pixel);
+  font-size: clamp(1rem, 1.7vw, 1.45rem);
+  line-height: 1.6;
+  color: #101c4a;
+  margin-bottom: 26px;
+}
+/* The measure is in ch, so it tracks the type size and the line length stays
+   readable instead of running to the window edge. */
+.window-inner-content p { margin-bottom: 16px; max-width: 62ch; }
+.doc-note { color: #5a6068; font-size: 0.82em; }
 
-/* ── CRT Window Transitions ── */
-.element-turn-off {
-  animation: crtElementOff 0.4s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
-  transform-origin: center center;
+/* ── Founders ─── */
+.people {
+  list-style: none;
+  margin: 28px 0 22px;
+  display: grid;
+  gap: 14px;
+  max-width: 620px;
 }
+.person {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  padding: 14px 16px;
+  background: #eef0f2;
+  border-top: 2px solid var(--win-shadow);
+  border-left: 2px solid var(--win-shadow);
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+}
+.person-name {
+  font-family: var(--font-pixel);
+  font-size: 0.82em;
+  color: #101c4a;
+}
+.person-role { color: #5a6068; font-size: 0.85em; }
+.person-mail {
+  flex: 1 1 100%;
+  color: var(--win-title);
+  word-break: break-all;
+}
+
+.doc-figure { margin-top: 24px; max-width: 620px; }
+.doc-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 2px solid var(--win-shadow);
+  /* Push the photography toward a broadcast frame rather than stock. */
+  filter: grayscale(0.85) contrast(1.15) brightness(0.95);
+}
+.doc-figure figcaption { font-size: 0.82em; color: #5a6068; margin-top: 8px; }
+
+/* Four cells for four axes. Two carry an image so the grid is not all
+   white-on-white text cards. */
+.control-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.control-cell {
+  border: 2px solid var(--win-shadow);
+  background: #eef0f2;
+  padding: 20px;
+}
+.control-cell h3 {
+  font-family: var(--font-pixel);
+  font-size: 0.72em;
+  line-height: 1.5;
+  color: #101c4a;
+  margin-bottom: 14px;
+}
+.control-cell p { margin: 0; font-size: 0.92em; max-width: none; }
+.control-cell--img {
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  color: #f2f7f8;
+  isolation: isolate;
+}
+.control-cell--img::before {
+  content: "";
+  position: absolute; inset: 0;
+  z-index: -1;
+  background: rgba(8, 12, 16, 0.74);
+  backdrop-filter: saturate(0.2);
+}
+.control-cell--img h3 { color: var(--accent); }
+
+/* --- Reel --- */
+.reel-player { position: relative; border: 2px solid var(--win-shadow); background: var(--crt-void); margin-bottom: 18px; }
+.reel-video { display: block; width: 100%; aspect-ratio: 16 / 9; background: var(--crt-void); }
+.reel-video[hidden] { display: none; }
+
+.reel-nosignal { position: relative; aspect-ratio: 16 / 9; display: grid; place-content: center; text-align: center; }
+.reel-nosignal[hidden] { display: none; }
+#reelNoiseCanvas { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; opacity: 0.5; }
+.reel-nosignal-line {
+  position: relative;
+  font-family: var(--font-pixel);
+  font-size: clamp(0.9rem, 1.6vw, 1.25rem);
+  color: var(--accent);
+  margin: 0 0 12px;
+}
+.reel-nosignal-sub { position: relative; margin: 0; color: #9fb0b4; font-size: 0.9em; }
+
+.reel-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.reel-frame { margin: 0; }
+.reel-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 2px solid var(--win-shadow);
+  filter: grayscale(0.9) contrast(1.2) brightness(0.9);
+}
+.reel-frame figcaption { font-size: 0.8em; color: #5a6068; margin-top: 8px; }
+
+/* --- CRT window transitions. Motivated: state change, the monitor re-syncing. --- */
+.element-turn-off { animation: crtElementOff 0.34s cubic-bezier(0.1, 0.9, 0.2, 1) forwards; }
 @keyframes crtElementOff {
-  0% { transform: translate(-50%, -50%) scale(1, 1); filter: brightness(1); opacity: 1; }
-  50% { transform: translate(-50%, -50%) scale(1, 0.02); filter: brightness(3); background: #fff; opacity: 1; }
-  100% { transform: translate(-50%, -50%) scale(0, 0); filter: brightness(5); background: #fff; opacity: 0; }
+  0%   { transform: translate(-50%, -50%) scale(1, 1);    filter: brightness(1); opacity: 1; }
+  55%  { transform: translate(-50%, -50%) scale(1, 0.02); filter: brightness(3); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(0, 0.02); filter: brightness(5); opacity: 0; }
 }
-
-.element-turn-on {
-  animation: crtElementOn 0.4s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
-  transform-origin: center center;
-}
+.element-turn-on { animation: crtElementOn 0.34s cubic-bezier(0.1, 0.9, 0.2, 1) forwards; }
 @keyframes crtElementOn {
-  0% { transform: translate(-50%, -50%) scale(0, 0); filter: brightness(5); background: #fff; opacity: 0; }
-  50% { transform: translate(-50%, -50%) scale(1, 0.02); filter: brightness(3); background: #fff; opacity: 1; }
-  100% { transform: translate(-50%, -50%) scale(1, 1); filter: brightness(1); opacity: 1; }
+  0%   { transform: translate(-50%, -50%) scale(0, 0.02); filter: brightness(5); opacity: 0; }
+  55%  { transform: translate(-50%, -50%) scale(1, 0.02); filter: brightness(3); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1, 1);    filter: brightness(1); opacity: 1; }
 }
 
-/* ── Media Viewer ── */
-.media-preview-box {
-  width: 35%; 
-  height: 50%;
-  align-self: flex-start;
-  border-top: 2px solid #808080; border-left: 2px solid #808080;
-  border-right: 2px solid #fff; border-bottom: 2px solid #fff;
-  background: #000; display: flex; flex-direction: column;
+/* --- Taskbar: chrome of the simulated OS. --- */
+.taskbar {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  z-index: 30;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 4px;
+  background: var(--win-bg);
+  border-top: 2px solid #fff;
 }
-#mediaNoiseCanvas { flex: 1; width: 100%; image-rendering: pixelated; }
+.taskbar-start {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 0.5rem;
+  padding: 5px 8px;
+}
+.taskbar-start-mark { color: var(--win-title); font-size: 0.7rem; line-height: 1; }
+.taskbar-tasks { flex: 1; display: flex; gap: 4px; min-width: 0; }
+.taskbar-task {
+  font-family: var(--font-pixel);
+  font-size: 0.45rem;
+  padding: 5px 8px;
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: var(--win-bg);
+  border-top: 2px solid #060708;
+  border-left: 2px solid #060708;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  color: #14161a;
+}
+.taskbar-tray {
+  font-family: var(--font-pixel);
+  font-size: 0.45rem;
+  color: #14161a;
+  padding: 5px 8px;
+  border-top: 2px solid var(--win-shadow);
+  border-left: 2px solid var(--win-shadow);
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+}
+
+.start-menu {
+  position: absolute;
+  left: 4px;
+  bottom: 36px;
+  z-index: 35;
+  display: flex;
+  background: var(--win-bg);
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  border-right: 2px solid #060708;
+  border-bottom: 2px solid #060708;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+}
+.start-menu[hidden] { display: none; }
+.start-menu-rail {
+  width: 26px;
+  background: linear-gradient(180deg, var(--win-title-grad), var(--win-title));
+  color: #dff3f5;
+  font-family: var(--font-pixel);
+  font-size: 0.5rem;
+  letter-spacing: 0.14em;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+}
+.start-menu-list { list-style: none; padding: 4px; min-width: 210px; }
+.start-menu-list button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-ui);
+  padding: 9px 12px;
+  font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  font-size: 0.9rem;
+  color: #14161a;
+  cursor: pointer;
+}
+.start-menu-list button:hover { background: var(--win-title); color: #fff; }
+
+/* ═══ RESPONSIVE ════════════════════════════════════════════════ */
+
+@media (max-width: 1100px) {
+  /* Controls drop under the feed rather than squeezing it into a letterbox. */
+  #viewDesktop.active {
+    grid-template-columns: clamp(124px, 18%, 152px) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+  .ctrl-panel { grid-column: 1 / -1; }
+  .ctrl-sliders { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; }
+  .ctrl-btns { flex-direction: row; flex-wrap: wrap; }
+  .ctrl-btn { flex: 1; min-width: 120px; }
+  .ctrl-status { margin-top: 4px; }
+}
+
+@media (max-width: 900px) {
+  .win95-window { width: 92%; height: 80%; }
+  .win95-window.maximized { width: 98%; height: 92%; }
+  .control-grid, .reel-strip { grid-template-columns: minmax(0, 1fr); }
+  .desk-strip { flex-direction: column; align-items: flex-start; }
+}
 
 @media (max-width: 640px) {
-  .css-tv-bezel { border-width: 4vw; border-radius: 4vw; top: 1vw; left: 1vw; right: 1vw; bottom: 1vw; }
-  .tv-screen { top: 5vw; left: 5vw; right: 5vw; bottom: 5vw; border-radius: 2vw; }
+  /* The nav rail goes horizontal above the feed. */
+  #viewDesktop.active {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+  .icon-rail { flex-direction: row; overflow-x: auto; overflow-y: hidden; }
+  .desktop-icon { flex: 0 0 auto; min-width: 74px; }
+  .ctrl-panel { grid-column: auto; }
+  .ctrl-sliders { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .css-tv-bezel { inset: 1vw; border-width: 4vw; border-radius: 4vw; }
   .css-tv-inner-bevel { display: none; }
-  .win95-window { width: 90%; height: 80%; }
-  .win95-window.maximized { width: 100%; height: 100%; }
-  .desktop-grid { grid-template-columns: repeat(2, 1fr); }
-  .media-preview-box { display: none; }
+  .tv-screen { inset: 5vw; border-radius: 2vw; }
+  .tv-brand { display: none; }
+  .boot-readout { font-size: 0.85rem; left: 5%; bottom: 6%; }
+  .window-inner-content { padding: 16px; }
+  /* The cassette is authored at a fixed pixel size. Scale the rendered scene
+     rather than the elements: `zoom` would fight preserve-3d. */
+  .vhs-stage { perspective: 620px; transform: scale(0.62); }
+}
+
+/* ═══ REDUCED MOTION ════════════════════════════════════════════
+   MOTION_INTENSITY is 8, so this is mandatory, not a courtesy.
+   Everything that moves collapses to an instant state change. The tape
+   sequence is skipped outright by main.js; this is the CSS backstop.
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .press-start-btn { animation: none; opacity: 1; }
+  .vhs-stage { display: none !important; }
+  .grid-canvas { display: none; }
+  .noise-layer { opacity: 0.06; }
 }

@@ -1,9 +1,13 @@
-﻿<!DOCTYPE html>
-<html lang="ko">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DCPG – Découpage AI Studio</title>
+  <title>DCPG - Découpage AI Studio</title>
+  <meta name="description" content="Découpage is an AI video studio. We control the objects and subjects inside the frame, shot to shot." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preload" href="/fonts/press-start-2p-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/vt323-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="./src/styles.css" />
 </head>
 <body>
@@ -12,122 +16,292 @@
   <div class="css-tv-inner-bevel"></div>
 
   <div class="tv-screen" id="tvScreen">
+
+    <!-- ══ STAGE 1: VCR HOME / PRESS START ══ -->
     <div class="tv-page active" id="homeContent">
-      <div class="osd-top-left">PLAY</div>
-      <div class="osd-top-right">CH 3</div>
-      <div class="title-container" style="text-align:center;">
+      <div class="osd-corner osd-tl">PLAY</div>
+      <div class="osd-corner osd-tr">CH 03</div>
+      <div class="home-stack">
         <h1 class="dcpg-logo">DCPG</h1>
-        <div class="dcpg-sub">Découpage AI Studio</div>
+        <p class="dcpg-sub">Découpage AI Studio</p>
       </div>
-      <button id="startBtn" class="press-start-btn">PRESS START</button>
+      <button id="startBtn" class="press-start-btn" type="button">PRESS START</button>
     </div>
 
+    <!-- ══ STAGE 2: TAPE LOAD + SYSTEM BOOT READOUT ══ -->
     <div class="tv-page" id="vhsTransition">
       <div class="color-bars-bg"></div>
       <canvas id="transNoiseCanvas" class="noise-layer"></canvas>
+      <pre class="boot-readout" id="bootReadout" aria-hidden="true"></pre>
     </div>
 
+    <!-- ══ STAGE 3: DESKTOP ══ -->
     <div class="tv-page" id="companyContent">
-      <div class="color-bars-bg"></div>
-      <canvas id="vhsNoiseCanvas" class="noise-layer"></canvas>
-      
+      <canvas id="gridCanvas" class="grid-canvas" aria-hidden="true"></canvas>
+      <canvas id="vhsNoiseCanvas" class="noise-layer noise-layer--faint"></canvas>
+
       <div class="win95-window" id="win95Window">
         <div class="win95-titlebar">
-          <div class="win95-titlebar-text"><span id="win95Title">DCPG_SYSTEM_OVERRIDE.EXE</span></div>
-          <div><button class="win95-btn-small">_</button><button class="win95-btn-small">□</button><button class="win95-btn-small">X</button></div>
+          <div class="win95-titlebar-text"><span id="win95Title">DCPG_SYSTEM.EXE</span></div>
+          <div class="win95-titlebar-btns">
+            <button class="win95-btn-small" type="button" aria-label="Minimize">_</button>
+            <button class="win95-btn-small" type="button" aria-label="Maximize">&#9633;</button>
+            <button class="win95-btn-small" type="button" aria-label="Close">X</button>
+          </div>
         </div>
-        
+
         <div class="win95-content" id="win95Content">
-          <!-- DESKTOP VIEW -->
+
+          <!-- DESKTOP
+               The old desktop asserted that we control objects and subjects.
+               This one demonstrates it: a live detection feed on the left, and
+               the controls that drive it on the right. The sliders are real. -->
           <div class="view-section active" id="viewDesktop">
-            <div class="desktop-grid">
-              <a class="desktop-icon" href="#" data-target="viewAbout" data-title="ABOUT.TXT">
-                <div class="icon-emoji">📁</div><span>ABOUT.TXT</span>
-              </a>
-              <a class="desktop-icon" href="#" data-target="viewServices" data-title="SERVICES.EXE">
-                <div class="icon-emoji">⚙️</div><span>SERVICES</span>
-              </a>
-              <a class="desktop-icon" href="#" data-target="viewReel" data-title="AI_REEL.AVI">
-                <div class="icon-emoji">🎞️</div><span>AI_REEL.AVI</span>
-              </a>
-              <a class="desktop-icon" href="#" data-target="viewTeam" data-title="TEAM.DAT">
-                <div class="icon-emoji">👥</div><span>TEAM.DAT</span>
-              </a>
-              <a class="desktop-icon" href="#" data-target="viewContact" data-title="CONTACT.COM">
-                <div class="icon-emoji">📧</div><span>CONTACT</span>
-              </a>
+
+            <nav class="icon-rail" aria-label="Desktop">
+              <button class="desktop-icon" type="button" data-target="viewAbout" data-title="ABOUT.TXT">
+                <span class="icon-emoji" aria-hidden="true">📁</span><span class="icon-label">ABOUT.TXT</span>
+              </button>
+              <button class="desktop-icon" type="button" data-target="viewServices" data-title="CONTROL.EXE">
+                <span class="icon-emoji" aria-hidden="true">⚙️</span><span class="icon-label">CONTROL.EXE</span>
+              </button>
+              <button class="desktop-icon" type="button" data-target="viewReel" data-title="AI_REEL.AVI">
+                <span class="icon-emoji" aria-hidden="true">🎞️</span><span class="icon-label">AI_REEL.AVI</span>
+              </button>
+              <button class="desktop-icon" type="button" data-target="viewTeam" data-title="STUDIO.DAT">
+                <span class="icon-emoji" aria-hidden="true">👥</span><span class="icon-label">STUDIO.DAT</span>
+              </button>
+              <button class="desktop-icon" type="button" data-target="viewContact" data-title="CONTACT.COM">
+                <span class="icon-emoji" aria-hidden="true">📧</span><span class="icon-label">CONTACT.COM</span>
+              </button>
+            </nav>
+
+            <div class="desk-main">
+              <div class="scene-viewport" id="sceneViewport">
+                <!-- The plate is 372x179, an ultra-wide 2.08:1. Letterboxed rather
+                     than cropped, because the objects worth detecting sit at the
+                     edges: the parked car bottom-left, the pedestrians right.
+                     main.js sizes this frame so the overlay lines up exactly. -->
+                <div class="scene-frame" id="sceneFrame">
+                  <!-- Everything that belongs to the scene rides the camera move
+                       together: the plate, the night grade, the practicals. -->
+                  <div class="scene-plate" id="scenePlate">
+                    <img
+                      id="sceneImg"
+                      class="scene-img"
+                      src="/scene.png"
+                      width="372"
+                      height="179"
+                      alt="A city intersection: a parked car, pedestrians on the right pavement, traffic lights, a bench and a mailbox."
+                    />
+                    <span class="scene-night" aria-hidden="true"></span>
+                    <span class="scene-lamps" aria-hidden="true"></span>
+                  </div>
+                  <!-- The tracker's estimated path for each target. Drawn here
+                       rather than in the DOM because it is a per-frame polyline. -->
+                  <canvas id="sceneTrails" class="scene-trails" aria-hidden="true"></canvas>
+                  <div class="scene-boxes" id="sceneBoxes"></div>
+                  <span class="scene-scan" aria-hidden="true"></span>
+                </div>
+                <div class="scene-hud">
+                  <span id="sceneState">FEED IDLE</span>
+                  <span id="sceneClock">REC 00:00:00</span>
+                </div>
+              </div>
+
+              <div class="desk-strip">
+                <p class="desk-strip-p">Every object and subject in the frame is addressable, not baked.</p>
+                <button class="desk-cta" type="button" data-target="viewContact" data-title="CONTACT.COM">
+                  Start a project
+                </button>
+              </div>
             </div>
 
-            <div class="media-preview-box">
-              <canvas id="mediaNoiseCanvas"></canvas>
-            </div>
+            <aside class="ctrl-panel" aria-label="Detection controls">
+              <h2 class="ctrl-h">CONTROLS</h2>
+
+              <div class="ctrl-sliders">
+                <div class="ctrl-row">
+                  <label class="ctrl-name" for="ctrlSensitivity">Object Detection Sensitivity</label>
+                  <input type="range" id="ctrlSensitivity" min="0" max="100" value="64" />
+                </div>
+                <div class="ctrl-row">
+                  <label class="ctrl-name" for="ctrlPrecision">Motion Tracking Precision</label>
+                  <input type="range" id="ctrlPrecision" min="0" max="100" value="72" />
+                </div>
+                <div class="ctrl-row">
+                  <label class="ctrl-name" for="ctrlFace">Face Recognition Accuracy</label>
+                  <input type="range" id="ctrlFace" min="0" max="100" value="80" />
+                </div>
+                <div class="ctrl-row">
+                  <label class="ctrl-name" for="ctrlRelight">
+                    Scene Relight <span class="ctrl-hint" id="relightHint">Day</span>
+                  </label>
+                  <input type="range" id="ctrlRelight" min="0" max="100" value="0" />
+                </div>
+              </div>
+
+              <div class="ctrl-btns">
+                <button type="button" class="ctrl-btn" id="btnFeed">Start AI Feed</button>
+                <button type="button" class="ctrl-btn" id="btnApply">Apply Controls</button>
+                <button type="button" class="ctrl-btn" id="btnReset">Reset Parameters</button>
+              </div>
+
+              <p class="ctrl-status">
+                <span class="ctrl-status-label">Status:</span>
+                <!-- Real semantic state, not decoration: it tracks whether the
+                     feed is actually running. -->
+                <span class="led" id="statusLed" data-state="idle" role="status">IDLE</span>
+              </p>
+            </aside>
           </div>
 
-          <!-- ABOUT VIEW -->
+          <!-- ABOUT -->
           <div class="view-section" id="viewAbout">
-            <div class="window-toolbar"><button class="back-btn">← BACK</button></div>
+            <div class="window-toolbar"><button class="back-btn" type="button">&lt; BACK</button></div>
             <div class="window-inner-content">
-              <h3>Découpage AI Studio</h3>
-              <p>We are a futuristic video production studio leveraging AI to bring vintage aesthetics into the modern era.</p>
-              <p>Specializing in deep video processing and neural-guided visual synthesis.</p>
+              <h2 class="doc-h">We move what is inside the shot.</h2>
+              <p>Most generative video hands you one take and no notes. You get a look, not a scene. Change your mind about the car in the background and you regenerate everything, including the parts that were already right.</p>
+              <p>Découpage works the other way around. A frame is not a flat image to us. It is a set of objects and subjects we can address one at a time.</p>
+              <p>Move the actor, hold the room still. Swap the product, keep the light. Re-block the camera without recasting the face. That is the whole company.</p>
+              <figure class="doc-figure">
+                <img src="https://picsum.photos/seed/dcpg-frame-control/720/405" alt="A film frame under object-level isolation." loading="lazy" width="720" height="405" />
+                <figcaption>Every element in a frame is addressable, not baked.</figcaption>
+              </figure>
             </div>
           </div>
-          
-          <!-- SERVICES VIEW -->
+
+          <!-- CONTROL -->
           <div class="view-section" id="viewServices">
-            <div class="window-toolbar"><button class="back-btn">← BACK</button></div>
+            <div class="window-toolbar"><button class="back-btn" type="button">&lt; BACK</button></div>
             <div class="window-inner-content">
-              <h3>OUR SERVICES</h3>
-              <ul>
-                <li>AI Video Generation</li>
-                <li>Retro Aesthetic Processing</li>
-                <li>3D Motion Graphics</li>
-                <li>Generative Storytelling</li>
-              </ul>
-            </div>
-          </div>
-          
-          <!-- REEL VIEW -->
-          <div class="view-section" id="viewReel">
-            <div class="window-toolbar"><button class="back-btn">← BACK</button></div>
-            <div class="window-inner-content" style="text-align: center;">
-              <h3 style="margin-bottom: 20px;">AI_REEL.AVI</h3>
-              <div style="width: 100%; height: 250px; background: #000; border: 2px inset #fff; display:flex; align-items:center; justify-content:center; color:#0f0;">
-                [ VIDEO SIGNAL LOST - INSERT REEL ]
+              <h2 class="doc-h">Four axes of control.</h2>
+              <div class="control-grid">
+                <article class="control-cell">
+                  <h3>Subject</h3>
+                  <p>Keep one face, one body, one performance across every shot. Re-direct the motion without recasting.</p>
+                </article>
+                <article class="control-cell control-cell--img" style="background-image:url('https://picsum.photos/seed/dcpg-object-swap/480/360')">
+                  <h3>Object</h3>
+                  <p>Add, remove, or replace anything in the frame. The rest of the shot does not move.</p>
+                </article>
+                <article class="control-cell control-cell--img" style="background-image:url('https://picsum.photos/seed/dcpg-camera-move/480/360')">
+                  <h3>Camera</h3>
+                  <p>Re-block the move after the take. Push in, orbit, or hold, on footage that already exists.</p>
+                </article>
+                <article class="control-cell">
+                  <h3>Continuity</h3>
+                  <p>Shot 4 remembers shot 1. Wardrobe, set dressing, and light carry across the cut.</p>
+                </article>
               </div>
             </div>
           </div>
-          
-          <!-- TEAM VIEW -->
-          <div class="view-section" id="viewTeam">
-            <div class="window-toolbar"><button class="back-btn">← BACK</button></div>
+
+          <!-- REEL -->
+          <div class="view-section" id="viewReel">
+            <div class="window-toolbar"><button class="back-btn" type="button">&lt; BACK</button></div>
             <div class="window-inner-content">
-              <h3>TEAM DCPG</h3>
-              <p>Director: EN</p>
-              <p>AI Engineer: Antigravity</p>
+              <h2 class="doc-h">Selected work.</h2>
+
+              <!-- Drop the finished film at public/reel.mp4 and it plays here.
+                   Until that file exists, main.js swaps in the no-signal panel below. -->
+              <div class="reel-player" id="reelPlayer">
+                <video id="reelVideo" class="reel-video" controls playsinline preload="none" poster="https://picsum.photos/seed/dcpg-reel-poster/960/540">
+                  <source src="/reel.mp4" type="video/mp4" />
+                </video>
+                <div class="reel-nosignal" id="reelNoSignal" hidden>
+                  <canvas id="reelNoiseCanvas" aria-hidden="true"></canvas>
+                  <p class="reel-nosignal-line">NO REEL LOADED</p>
+                  <p class="reel-nosignal-sub">Tape slot empty. Drop reel.mp4 to load.</p>
+                </div>
+              </div>
+
+              <div class="reel-strip">
+                <figure class="reel-frame">
+                  <img src="https://picsum.photos/seed/dcpg-reel-a/400/300" alt="Frame from a DCPG spot." loading="lazy" width="400" height="300" />
+                  <figcaption>Subject held across 9 shots.</figcaption>
+                </figure>
+                <figure class="reel-frame">
+                  <img src="https://picsum.photos/seed/dcpg-reel-b/400/300" alt="Frame from a DCPG spot." loading="lazy" width="400" height="300" />
+                  <figcaption>Product swapped after the edit locked.</figcaption>
+                </figure>
+                <figure class="reel-frame">
+                  <img src="https://picsum.photos/seed/dcpg-reel-c/400/300" alt="Frame from a DCPG spot." loading="lazy" width="400" height="300" />
+                  <figcaption>Camera re-blocked, cast untouched.</figcaption>
+                </figure>
+              </div>
             </div>
           </div>
 
-          <!-- CONTACT VIEW -->
-          <div class="view-section" id="viewContact">
-            <div class="window-toolbar"><button class="back-btn">← BACK</button></div>
+          <!-- STUDIO -->
+          <div class="view-section" id="viewTeam">
+            <div class="window-toolbar"><button class="back-btn" type="button">&lt; BACK</button></div>
             <div class="window-inner-content">
-              <h3>CONTACT US</h3>
-              <p>Email: hello@dcpg.studio</p>
-              <p>Freq: 144.25 MHz</p>
-              <p>Coordinates: Classified</p>
+              <h2 class="doc-h">The studio.</h2>
+              <p>Découpage is run by two founders. We build the control tooling ourselves, then use it on the work we take.</p>
+              <p>We take a limited number of projects, so the people who scope a job are the people who finish it. You will be talking to one of us, not to an account manager.</p>
+              <!-- TODO(client): the studio address and the rest of the company
+                   detail land here. Emails live in CONTACT.COM only, on purpose:
+                   one page owns the contact intent. -->
+            </div>
+          </div>
+
+          <!-- CONTACT -->
+          <div class="view-section" id="viewContact">
+            <div class="window-toolbar"><button class="back-btn" type="button">&lt; BACK</button></div>
+            <div class="window-inner-content">
+              <h2 class="doc-h">Start a project.</h2>
+              <p>Send the brief, the deadline, and whatever reference you already have. Write to either of us. We answer within two working days.</p>
+
+              <ul class="people">
+                <li class="person">
+                  <span class="person-name">김홍조</span>
+                  <span class="person-role">Co-founder</span>
+                  <a class="person-mail" href="mailto:nanunnanana@gmail.com">nanunnanana@gmail.com</a>
+                </li>
+                <li class="person">
+                  <span class="person-name">정인승</span>
+                  <span class="person-role">Co-founder</span>
+                  <a class="person-mail" href="mailto:cherrycoke5235@gmail.com">cherrycoke5235@gmail.com</a>
+                </li>
+              </ul>
+
+              <p class="doc-note">Découpage AI Studio - dcpg.site</p>
             </div>
           </div>
 
         </div>
       </div>
+
+      <!-- TASKBAR: chrome of the simulated OS, not decoration. -->
+      <div class="taskbar">
+        <button class="taskbar-start" type="button" id="taskbarStart" aria-expanded="false">
+          <span class="taskbar-start-mark" aria-hidden="true">▚</span> Start
+        </button>
+        <div class="taskbar-tasks" id="taskbarTasks"></div>
+        <div class="taskbar-tray"><span id="taskbarClock">--:--</span></div>
+      </div>
+
+      <nav class="start-menu" id="startMenu" hidden>
+        <div class="start-menu-rail" aria-hidden="true">DÉCOUPAGE</div>
+        <ul class="start-menu-list">
+          <li><button type="button" data-target="viewAbout" data-title="ABOUT.TXT">About the studio</button></li>
+          <li><button type="button" data-target="viewServices" data-title="CONTROL.EXE">What we control</button></li>
+          <li><button type="button" data-target="viewReel" data-title="AI_REEL.AVI">Selected work</button></li>
+          <li><button type="button" data-target="viewContact" data-title="CONTACT.COM">Start a project</button></li>
+        </ul>
+      </nav>
     </div>
 
-    <div class="glare"></div>
-    <div class="scanlines"></div>
+    <div class="glare" aria-hidden="true"></div>
+    <div class="scanlines" aria-hidden="true"></div>
   </div>
 
-  <div class="vhs-cassette-container" id="cassetteContainer" style="display:none;">
+  <!-- ══ 3D TAPE STAGE ══
+       One shared perspective for the cassette and the slot it goes into.
+       Depth sorting (not z-index) decides what occludes what in here. -->
+  <div class="vhs-stage" id="vhsStage" hidden>
+
     <div class="vhs-3d-box" id="cassette3D">
       <div class="face front">
         <div class="vhs-window"></div>
@@ -143,6 +317,15 @@
       <div class="face left"></div>
       <div class="face right"></div>
     </div>
+
+    <!-- The machine's mouth. Sits nearer the camera than the tape's resting Z,
+         so the tape is swallowed by it rather than fading out. -->
+    <div class="vcr-slot" id="vcrSlot">
+      <div class="vcr-slot-throat"></div>
+      <div class="vcr-slot-lip"></div>
+      <div class="vcr-slot-flap" id="vcrSlotFlap"></div>
+    </div>
+
   </div>
 
   <script type="module" src="./src/main.js"></script>
