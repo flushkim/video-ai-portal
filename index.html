@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DCPG – Découpage AI Studio</title>
+  <link rel="stylesheet" href="./src/styles.css" />
+</head>
+<body>
+
+  <div class="css-tv-bezel"><div class="tv-brand">DCPG</div></div>
+  <div class="css-tv-inner-bevel"></div>
+
+  <div class="tv-screen" id="tvScreen">
+    <div class="tv-page active" id="homeContent">
+      <div class="osd-top-left">PLAY</div>
+      <div class="osd-top-right">CH 3</div>
+      <div class="title-container" style="text-align:center;">
+        <h1 class="dcpg-logo">DCPG</h1>
+        <div class="dcpg-sub">Découpage AI Studio</div>
+      </div>
+      <button id="startBtn" class="press-start-btn">PRESS START</button>
+    </div>
+
+    <div class="tv-page" id="vhsTransition">
+      <div class="color-bars-bg"></div>
+      <canvas id="transNoiseCanvas" class="noise-layer"></canvas>
+    </div>
+
+    <div class="tv-page" id="companyContent">
+      <div class="color-bars-bg"></div>
+      <canvas id="vhsNoiseCanvas" class="noise-layer"></canvas>
+      
+      <div class="win95-window" id="win95Window">
+        <div class="win95-titlebar">
+          <div class="win95-titlebar-text"><span id="win95Title">DCPG_SYSTEM_OVERRIDE.EXE</span></div>
+          <div><button class="win95-btn-small">_</button><button class="win95-btn-small">□</button><button class="win95-btn-small">X</button></div>
+        </div>
+        
+        <div class="win95-content" id="win95Content">
+          <!-- DESKTOP VIEW -->
+          <div class="view-section active" id="viewDesktop">
+            <div class="desktop-grid">
+              <a class="desktop-icon" href="#" data-target="viewAbout" data-title="ABOUT.TXT">
+                <div class="icon-emoji">📁</div><span>ABOUT.TXT</span>
+              </a>
+              <a class="desktop-icon" href="#" data-target="viewServices" data-title="SERVICES.EXE">
+                <div class="icon-emoji">⚙️</div><span>SERVICES</span>
+              </a>
+              <a class="desktop-icon" href="#" data-target="viewReel" data-title="AI_REEL.AVI">
+                <div class="icon-emoji">🎞️</div><span>AI_REEL.AVI</span>
+              </a>
+              <a class="desktop-icon" href="#" data-target="viewTeam" data-title="TEAM.DAT">
+                <div class="icon-emoji">👥</div><span>TEAM.DAT</span>
+              </a>
+              <a class="desktop-icon" href="#" data-target="viewContact" data-title="CONTACT.COM">
+                <div class="icon-emoji">📧</div><span>CONTACT</span>
+              </a>
+            </div>
+
+            <div class="media-preview-box">
+              <canvas id="mediaNoiseCanvas"></canvas>
+            </div>
+          </div>
+
+          <!-- ABOUT VIEW -->
+          <div class="view-section" id="viewAbout">
+            <div class="window-toolbar"><button class="back-btn">← BACK</button></div>
+            <div class="window-inner-content">
+              <h3>Découpage AI Studio</h3>
+              <p>We are a futuristic video production studio leveraging AI to bring vintage aesthetics into the modern era.</p>
+              <p>Specializing in deep video processing and neural-guided visual synthesis.</p>
+            </div>
+          </div>
+          
+          <!-- SERVICES VIEW -->
+          <div class="view-section" id="viewServices">
+            <div class="window-toolbar"><button class="back-btn">← BACK</button></div>
+            <div class="window-inner-content">
+              <h3>OUR SERVICES</h3>
+              <ul>
+                <li>AI Video Generation</li>
+                <li>Retro Aesthetic Processing</li>
+                <li>3D Motion Graphics</li>
+                <li>Generative Storytelling</li>
+              </ul>
+            </div>
+          </div>
+          
+          <!-- REEL VIEW -->
+          <div class="view-section" id="viewReel">
+            <div class="window-toolbar"><button class="back-btn">← BACK</button></div>
+            <div class="window-inner-content" style="text-align: center;">
+              <h3 style="margin-bottom: 20px;">AI_REEL.AVI</h3>
+              <div style="width: 100%; height: 250px; background: #000; border: 2px inset #fff; display:flex; align-items:center; justify-content:center; color:#0f0;">
+                [ VIDEO SIGNAL LOST - INSERT REEL ]
+              </div>
+            </div>
+          </div>
+          
+          <!-- TEAM VIEW -->
+          <div class="view-section" id="viewTeam">
+            <div class="window-toolbar"><button class="back-btn">← BACK</button></div>
+            <div class="window-inner-content">
+              <h3>TEAM DCPG</h3>
+              <p>Director: EN</p>
+              <p>AI Engineer: Antigravity</p>
+            </div>
+          </div>
+
+          <!-- CONTACT VIEW -->
+          <div class="view-section" id="viewContact">
+            <div class="window-toolbar"><button class="back-btn">← BACK</button></div>
+            <div class="window-inner-content">
+              <h3>CONTACT US</h3>
+              <p>Email: hello@dcpg.studio</p>
+              <p>Freq: 144.25 MHz</p>
+              <p>Coordinates: Classified</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="glare"></div>
+    <div class="scanlines"></div>
+  </div>
+
+  <div class="vhs-cassette-container" id="cassetteContainer" style="display:none;">
+    <div class="vhs-3d-box" id="cassette3D">
+      <div class="face front">
+        <div class="vhs-window"></div>
+        <div class="vhs-label"><div class="vhs-label-title">DCPG TAPE 01</div></div>
+        <div class="vhs-reels">
+          <div class="vhs-reel" id="reel1"></div>
+          <div class="vhs-reel" id="reel2"></div>
+        </div>
+      </div>
+      <div class="face back"></div>
+      <div class="face top"><div class="vhs-spine-label">DCPG TAPE 01</div></div>
+      <div class="face bottom"></div>
+      <div class="face left"></div>
+      <div class="face right"></div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
