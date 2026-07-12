@@ -560,10 +560,10 @@ html, body {
 .win95-titlebar {
   background: linear-gradient(90deg, var(--win-title) 0%, var(--win-title-grad) 100%);
   color: #fff;
-  padding: 4px 4px 4px 7px;
+  padding: 6px 5px 6px 9px;
   display: flex; align-items: center; justify-content: space-between;
   font-family: var(--font-pixel);
-  font-size: clamp(0.42rem, 0.85vw, 0.62rem);
+  font-size: clamp(0.52rem, 0.9vw, 0.75rem);
   letter-spacing: 0.04em;
 }
 .win95-titlebar-btns { display: flex; gap: 3px; }
@@ -581,7 +581,7 @@ html, body {
   color: #14161a;
   cursor: pointer;
 }
-.win95-btn-small { font-size: 0.5rem; padding: 3px 5px; line-height: 1; }
+.win95-btn-small { font-size: 0.6rem; padding: 4px 7px; line-height: 1; }
 .win95-btn-small:active,
 .back-btn:active,
 .taskbar-start:active,
@@ -617,7 +617,7 @@ html, body {
    which is exactly what happened at 92px. */
 #viewDesktop.active {
   display: grid;
-  grid-template-columns: clamp(124px, 14%, 152px) minmax(0, 1fr) clamp(210px, 25%, 290px);
+  grid-template-columns: clamp(138px, 15%, 166px) minmax(0, 1fr) clamp(240px, 26%, 320px);
   gap: 12px;
   align-items: stretch;
 }
@@ -652,7 +652,7 @@ html, body {
 }
 .icon-label {
   font-family: var(--font-pixel);
-  font-size: clamp(0.44rem, 0.62vw, 0.55rem);
+  font-size: clamp(0.5rem, 0.68vw, 0.62rem);
   line-height: 1.4;
   letter-spacing: -0.02em;
   white-space: nowrap;
@@ -821,12 +821,12 @@ html, body {
   bottom: 100%;
   left: -2px;
   margin-bottom: 4px;
-  padding: 4px 6px;
+  padding: 5px 7px;
   background: #0d1747;
   border: 2px solid var(--accent);
   color: #eafcfd;
   font-family: var(--font-pixel);
-  font-size: 0.42rem;
+  font-size: clamp(0.45rem, 0.55vw, 0.58rem);
   line-height: 1.6;
   letter-spacing: 0.03em;
   white-space: nowrap;
@@ -857,10 +857,10 @@ html, body {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  padding: 5px 8px;
+  padding: 7px 10px;
   background: linear-gradient(180deg, transparent, rgba(6, 8, 10, 0.85));
   font-family: var(--font-pixel);
-  font-size: 0.4rem;
+  font-size: clamp(0.45rem, 0.55vw, 0.58rem);
   letter-spacing: 0.06em;
   color: var(--accent);
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.9);
@@ -884,18 +884,18 @@ html, body {
 .desk-strip-p {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-  font-size: 0.88rem;
+  font-size: clamp(0.95rem, 1.05vw, 1.2rem);
   line-height: 1.45;
   color: #2c3138;
 }
 /* Win95's default button: navy fill, white label. System palette, clears AA. */
 .desk-cta {
   flex: 0 0 auto;
-  padding: 10px 16px;
+  padding: 12px 20px;
   background: var(--win-title);
   color: #fff;
   font-family: var(--font-pixel);
-  font-size: 0.5rem;
+  font-size: clamp(0.55rem, 0.68vw, 0.68rem);
   letter-spacing: 0.04em;
   white-space: nowrap;
   cursor: pointer;
@@ -930,29 +930,29 @@ html, body {
 }
 .ctrl-h {
   font-family: var(--font-pixel);
-  font-size: 0.5rem;
+  font-size: 0.64rem;
   letter-spacing: 0.14em;
   color: #14161a;
-  padding-bottom: 8px;
+  padding-bottom: 9px;
   border-bottom: 2px groove #fff;
 }
 
-.ctrl-sliders { display: flex; flex-direction: column; gap: 10px; }
-.ctrl-row { display: flex; flex-direction: column; gap: 6px; }
+.ctrl-sliders { display: flex; flex-direction: column; gap: 12px; }
+.ctrl-row { display: flex; flex-direction: column; gap: 7px; }
 .ctrl-name {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 8px;
   font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-  font-size: 0.78rem;
+  font-size: clamp(0.88rem, 0.95vw, 1.05rem);
   line-height: 1.3;
   color: #14161a;
 }
 .ctrl-hint {
   flex: 0 0 auto;
   font-family: var(--font-pixel);
-  font-size: 0.4rem;
+  font-size: 0.52rem;
   letter-spacing: 0.06em;
   color: var(--win-title);
 }
@@ -1002,13 +1002,13 @@ html, body {
   border-radius: var(--radius-ui);
 }
 
-.ctrl-btns { display: flex; flex-direction: column; gap: 7px; margin-top: 2px; }
+.ctrl-btns { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
 .ctrl-btn {
-  padding: 9px 8px;
+  padding: 11px 10px;
   background: var(--win-bg);
   color: #14161a;
   font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-  font-size: 0.85rem;
+  font-size: clamp(0.92rem, 1vw, 1.1rem);
   cursor: pointer;
   border-top: 2px solid #fff;
   border-left: 2px solid #fff;
@@ -1053,27 +1053,27 @@ html, body {
 
 .ctrl-status {
   margin-top: auto;
-  padding-top: 10px;
+  padding-top: 12px;
   border-top: 2px groove #fff;
   display: flex;
   align-items: center;
   gap: 8px;
   font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
-  font-size: 0.85rem;
+  font-size: clamp(0.92rem, 1vw, 1.05rem);
   color: #14161a;
 }
 .led {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   font-family: var(--font-pixel);
-  font-size: 0.42rem;
+  font-size: 0.55rem;
   letter-spacing: 0.06em;
 }
 .led::before {
   content: "";
-  width: 11px;
-  height: 11px;
+  width: 13px;
+  height: 13px;
   border: 2px solid #5c6169;
   border-radius: 50%;
 }
@@ -1252,26 +1252,26 @@ html, body {
   position: absolute;
   left: 0; right: 0; bottom: 0;
   z-index: 30;
-  height: 34px;
+  height: 40px;
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 3px 4px;
+  padding: 4px 5px;
   background: var(--win-bg);
   border-top: 2px solid #fff;
 }
 .taskbar-start {
-  display: flex; align-items: center; gap: 5px;
-  font-size: 0.5rem;
-  padding: 5px 8px;
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.6rem;
+  padding: 7px 11px;
 }
-.taskbar-start-mark { color: var(--win-title); font-size: 0.7rem; line-height: 1; }
+.taskbar-start-mark { color: var(--win-title); font-size: 0.82rem; line-height: 1; }
 .taskbar-tasks { flex: 1; display: flex; gap: 4px; min-width: 0; }
 .taskbar-task {
   font-family: var(--font-pixel);
-  font-size: 0.45rem;
-  padding: 5px 8px;
-  max-width: 190px;
+  font-size: 0.55rem;
+  padding: 7px 10px;
+  max-width: 230px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1284,9 +1284,9 @@ html, body {
 }
 .taskbar-tray {
   font-family: var(--font-pixel);
-  font-size: 0.45rem;
+  font-size: 0.55rem;
   color: #14161a;
-  padding: 5px 8px;
+  padding: 7px 10px;
   border-top: 2px solid var(--win-shadow);
   border-left: 2px solid var(--win-shadow);
   border-right: 2px solid #fff;
@@ -1296,7 +1296,7 @@ html, body {
 .start-menu {
   position: absolute;
   left: 4px;
-  bottom: 36px;
+  bottom: 42px;
   z-index: 35;
   display: flex;
   background: var(--win-bg);
@@ -1372,15 +1372,18 @@ html, body {
     overflow-y: auto;
   }
 
-  /* Icons wrap rather than scrolling sideways: a hidden nav item is a lost one. */
+  /* Grid, not a wrapping flex row. A wrapped flex line does not always report
+     its full height back to the grid row, and CONTACT.COM was landing on a
+     third line that the row never made space for: the feed painted straight
+     over it. A grid container always sizes to its rows. */
   .icon-rail {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(86px, 1fr));
     gap: 6px;
     overflow: visible;
+    min-height: auto;
   }
-  .desktop-icon { flex: 0 0 auto; min-width: 98px; }
+  .desktop-icon { min-width: 0; }
 
   /* The feed gets its own height from the plate's shape instead of begging for
      leftovers. */
